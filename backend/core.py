@@ -7,6 +7,8 @@ from langchain_community.vectorstores.pinecone import Pinecone as PineconeLangCh
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from pinecone import Pinecone
 
+from prompt import qa_prompt
+
 load_dotenv()
 
 pc = Pinecone(
@@ -31,6 +33,7 @@ def execute_chat(query: str, chat_history: List[Dict[str, Any]] = []):
         chain_type="stuff",
         retriever=docsearch.as_retriever(),
         return_source_documents=True,
+        combine_docs_chain_kwargs={"prompt": qa_prompt.generate_chat_prompt()},
     )
     return qa.invoke({"question": query, "chat_history": chat_history})
 
