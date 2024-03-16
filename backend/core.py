@@ -8,6 +8,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from pinecone import Pinecone
 
 from prompt import qa_prompt
+from utils.constants import Constants
 
 load_dotenv()
 
@@ -15,14 +16,12 @@ pc = Pinecone(
     api_key=os.environ.get("PINECONE_API_KEY"),
 )
 
-INDEX_NAME = "INDEX_NAME"
-
 
 def execute_chat(query: str, chat_history: List[Dict[str, Any]] = []):
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     docsearch = PineconeLangChain.from_existing_index(
         embedding=embeddings,
-        index_name=INDEX_NAME,
+        index_name=Constants.INDEX_NAME,
     )
     chat = ChatOpenAI(
         verbose=True,
