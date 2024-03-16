@@ -1,3 +1,5 @@
+import uuid
+
 from backend.core import execute_chat
 import streamlit as st
 from streamlit_chat import message
@@ -53,8 +55,5 @@ if st.session_state["chat_answers_history"]:
         st.session_state["chat_answers_history"],
         st.session_state["user_prompt_history"],
     ):
-        message(
-            user_query,
-            is_user=True,
-        )
-        message(generated_response)
+        message(user_query, is_user=True, key=str(uuid.uuid4()))
+        message(generated_response, key=str(uuid.uuid4()))
